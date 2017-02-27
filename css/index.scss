@@ -1,0 +1,1356 @@
+@import 'keyframes';
+@import 'mixins';
+@import 'variables';
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+body > div,
+body > div > div {
+    margin: 0;
+    cursor: default;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+}
+
+html {
+    font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+body > div > div {
+    position: relative;
+    margin: auto;
+    background-image: url('#{$image}bkg-1.png');
+    background-size: cover;
+    width: 960px;
+    height: 540px;
+    font-size: 20px;
+
+    .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: opacity .5s;
+        opacity: 0;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+
+        &.BKG-2 {
+            background-image: url('#{$image}bkg-2.png');
+        }
+
+        &.BKG-3 {
+            background-image: url('#{$image}bkg-3.png');
+        }
+    }
+}
+
+.SCREEN-4 .BKG-2 {
+    opacity: 1;
+}
+
+@for $i from 5 through 14 {
+    .SCREEN-#{$i} .BKG-3 {
+        opacity: 1;
+    }
+}
+
+
+button {
+    margin: 0;
+    outline: none;
+    border: 0;
+
+    background-color: transparent;
+    background-image: url('#{$sprite}bu-1.png');
+    background-position: left top;
+    background-size: auto 500px;
+
+    cursor: pointer;
+    padding: 0;
+    color: transparent;
+    font-family: inherit;
+    font-size: inherit;
+
+    &.close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 2;
+        margin: 5px;
+        background-position: -420px -95px;
+        width: 40px;
+        height: 40px;
+
+        &:hover {
+            background-position: -420px -347px;
+        }
+    }
+
+    &.next-screen,
+    &.prev-screen {
+        width: 100px;
+        height: 125px;
+    }
+
+    &.next-screen {
+        background-position: -300px -50px;
+
+        &:hover {
+            background-position: -300px -304px;
+        }
+    }
+
+    &.prev-screen {
+        background-position: -190px -50px;
+
+        &:hover {
+            background-position: -190px -304px;
+        }
+    }
+
+    &.close-reveal {
+        background-position: -500px -90px;
+        width: 60px;
+        height: 45px;
+
+        &:hover {
+            background-position: -500px -343px;
+        }
+    }
+
+    &.quit-yes {
+        background-position: -600px -75px;
+        width: 95px;
+        height: 70px;
+
+        &:hover {
+            background-position: -600px -328px;
+        }
+    }
+
+    &.quit-no {
+        background-position: -730px -75px;
+        width: 95px;
+        height: 70px;
+
+        &:hover {
+            background-position: -730px -328px;
+        }
+    }
+}
+
+h2 {
+    font-size: 40px;
+}
+
+h3 {
+    margin: 0;
+    font-size: 30px;
+}
+
+p {
+    margin: 0;
+    font-size: 28px;
+}
+
+img.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -5;
+    width: 100%;
+    height: 100%;
+}
+
+.spinner {
+    background: $spinner-color;
+}
+
+.canvas-src { display: none; }
+
+.screen {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(100%);
+    transition: opacity 1s, transform .5s;
+    opacity: 0;
+    width: 960px;
+    height: 540px;
+}
+
+.screen.OPEN {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.screen.READY {
+    display: block;
+}
+
+.screen.LEAVE {
+    transform: translateX(-100%);
+    opacity: 1;
+}
+
+.screen .next-screen,
+.screen .prev-screen {
+    display: block;
+    position: absolute;
+    bottom: 1%;
+    z-index: 2;
+}
+
+.screen .next-screen {
+    right: 0;
+    transition: opacity 1s, transform 1s;
+    opacity: 0;
+    margin-right: 5px;
+    cursor: default;
+    pointer-events: none;
+}
+
+.screen.GATED .next-screen {
+    opacity: 0;
+    cursor: default;
+}
+
+
+.VOICE-OVER:not(.DEMO) .screen:not(.COMPLETE):not(.REPLAY) {
+    &#alarm {
+        .push-down {
+            cursor: default;
+            pointer-events: none;
+
+            &:hover {
+                background-position: -30px -140px;
+            }
+        }
+    }
+
+    &#who {
+        ul {
+            pointer-events: none;
+
+            li {
+                cursor: default;
+
+                &:hover {
+                    background-position: left top;
+
+                    &:nth-of-type(1) {
+                        background-position: left 12px;
+                    }
+
+                    &:nth-of-type(2) {
+                        background-position: left 23px;
+                    }
+                }
+            }
+        }
+    }
+
+    &#triangle {
+        .draggables {
+            cursor: default;
+            pointer-events: none;
+        }
+    }
+
+    &#choose {
+        li {
+            cursor: default;
+            pointer-events: none;
+        }
+    }
+
+    &#need {
+        .draggable,
+        .close-reveal {
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .close-reveal {
+            opacity: 0;
+        }
+    }
+}
+
+.MENU-quit .screen {
+    &:not(#quit) {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+.DEMO .screen .next-screen,
+.screen.COMPLETE .next-screen,
+.screen.REPLAY .next-screen {
+    opacity: 1;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.screen .prev-screen {
+    left: 0;
+    margin-left: 5px;
+}
+
+.screen {
+    &.no-frame {
+        color: $white;
+
+        .frame {
+            text-align: center;
+        }
+    }
+}
+
+// the following css is specific to this game
+
+#title {
+    .prev-screen {
+        display: none;
+    }
+
+    .next-screen {
+        right: 20px;
+        bottom: 0;
+        background-position: 0 0;
+        width: 175px;
+        height: 240px;
+
+        &:hover {
+            background-position: 0 249px;
+        }
+    }
+
+    .title {
+        margin: 0;
+
+        img {
+            position: absolute;
+
+            &:nth-of-type(1) {
+                bottom: 0;
+                left: 0;
+                z-index: -1;
+                width: 960px;
+            }
+
+            &:nth-of-type(2) {
+                bottom: 0;
+                left: 0;
+                width: 340px;
+            }
+
+            &:nth-of-type(3) {
+                top: 0;
+                left: 180px;
+                width: 600px;
+            }
+        }
+    }
+
+    canvas {
+        z-index: 3;
+    }
+}
+
+#info-chemical {
+    img {
+        position: absolute;
+
+        &:nth-of-type(1) {
+            top: 20px;
+            left: 120px;
+            width: 720px;
+        }
+
+        &:nth-of-type(2) {
+            top: 50px;
+            left: 80px;
+            width: 450px;
+        }
+
+        &:nth-of-type(3) {
+            top: 220px;
+            left: 500px;
+            width: 80px;
+        }
+    }
+
+    h2 {
+        position: absolute;
+        top: 260px;
+        left: 600px;
+        margin: 0;
+        text-align: center;
+        line-height: 1.2;
+        color: $white;
+        font-size: 56px;
+    }
+
+    &.OPEN {
+        $items: flame equal text;
+        $animations: zoomInUp fadeInRightMedium fadeIn;
+
+        @for $i from 1 through 3 {
+            $item: nth($items, $i);
+
+            .#{$item} {
+                animation-name: nth($animations, $i);
+                animation-play-state: paused;
+            }
+
+            &.#{to-upper-case($item)} .#{$item} {
+                animation-play-state: running;
+            }
+        }
+    }
+}
+
+#info-fuel-oxygen {
+    img {
+        position: absolute;
+
+        //&:nth-of-type(1) {
+        &.wood {
+            top: 160px;
+            left: 120px;
+            width: 200px;
+        }
+
+        //&:nth-of-type(2) {
+        &.plus {
+            top: 150px;
+            left: 300px;
+            width: 60px;
+        }
+
+        //&:nth-of-type(3) {
+        &.o2 {
+            top: 150px;
+            left: 380px;
+            width: 200px;
+        }
+
+        //&:nth-of-type(4) {
+        &.equal {
+            top: 160px;
+            left: 550px;
+            width: 60px;
+        }
+
+        //&:nth-of-type(5) {
+        &.fire {
+            top: 30px;
+            left: 580px;
+            width: 300px;
+        }
+
+        //&:nth-of-type(6) {
+        &.words {
+            top: 360px;
+            left: 120px;
+            width: 720px;
+        }
+    }
+
+    &.OPEN {
+        $items: wood plus o2 equal fire;
+        $animations: bounceInDown fadeInRightMedium fadeInDown fadeInRightMedium zoomInUp fadeIn;
+
+        @for $i from 1 through 5 {
+            $item: nth($items, $i);
+
+            .#{$item} {
+                animation-name: nth($animations, $i);
+                animation-play-state: paused;
+            }
+
+            &.#{to-upper-case($item)} .#{$item} {
+                animation-play-state: running;
+            }
+        }
+    }
+}
+
+#info-forrest {
+    div {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 40px;
+        width: 100%;
+        text-align: center;
+    }
+
+    &.OPEN {
+        div {
+            animation-name: fadeInUp;
+
+            p {
+                animation-name: fadeIn;
+                animation-delay: 1s;
+            }
+        }
+    }
+}
+
+#alarm {
+    img {
+        position: absolute;
+
+        &:nth-of-type(1) {
+            top: 10px;
+            left: 90px;
+            width: 780px;
+        }
+
+        &:nth-of-type(2) {
+            top: 120px;
+            left: 340px;
+            width: 280px;
+        }
+
+        &:nth-of-type(3) {
+            bottom: -100px;
+            left: 0;
+            width: 960px;
+        }
+    }
+
+    p {
+        position: absolute;
+        top: 80px;
+        left: 0;
+        margin: 0;
+        width: 100%;
+        text-align: center;
+        color: $white;
+    }
+
+    .push-down {
+        position: absolute;
+        top: 250px;
+        left: 410px;
+
+        background-image: url('#{$sprite}img-5-3.png');
+        background-position: -30px -140px;
+        background-size: 400px auto;
+
+        cursor: pointer;
+        width: 148px;
+        height: 140px;
+
+        &:hover {
+            background-position: -234px -140px;
+        }
+    }
+
+    &.OPEN {
+        img {
+
+            &:nth-of-type(3) {
+                animation-name: fadeInUp;
+            }
+        }
+    }
+}
+
+#who {
+    > div > img {
+        position: absolute;
+        top: 10px;
+        left: 60px;
+        width: 840px;
+    }
+
+    .selectable {
+        display: flex;
+        margin: 100px 0 0;
+        padding: 0 0 0 40px;
+        justify-content: center;
+
+        li {
+            background-position: left top;
+            background-size: auto 100%;
+            cursor: pointer;
+            height: 360px;
+            list-style: none;
+
+            &:hover {
+                background-position: right top;
+            }
+
+            &:nth-of-type(1) {
+                background-image: url('#{$sprite}img-6-2.png');
+                background-position: left 12px;
+                width: 175px;
+
+                &:hover {
+                    background-position: right 12px;
+                }
+            }
+
+            &:nth-of-type(2) {
+                background-image: url('#{$sprite}img-6-3.png');
+                background-position: left 23px;
+                width: 171px;
+
+                &:hover {
+                    background-position: right 23px;
+                }
+            }
+
+            &:nth-of-type(3) {
+                background-image: url('#{$sprite}img-6-4.png');
+                width: 200px;
+            }
+
+            &:nth-of-type(4) {
+                margin-left: -30px;
+                background-image: url('#{$sprite}img-6-5.png');
+                width: 252px;
+            }
+        }
+    }
+
+    .reveal {
+        img.animated {
+            position: absolute;
+            top: 100px;
+            left: 110px;
+            z-index: 1;
+            height: 360px;
+        }
+
+        div.animated {
+            position: absolute;
+            top: 180px;
+            left: 180px;
+            padding: 40px 40px 40px 100px;
+            width: 600px;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .close-reveal {
+            display: none;
+        }
+    }
+
+    &.OPEN {
+        .selectable {
+            li {
+                animation-name: fadeInRightBig;
+
+                &:nth-of-type(2) {
+                    animation-delay: 1s;
+                }
+
+                &:nth-of-type(3) {
+                    animation-delay: 2s;
+                }
+
+                &:nth-of-type(4) {
+                    animation-delay: 3s;
+                }
+            }
+        }
+    }
+
+    &.REVEAL-OPEN {
+        .selectable {
+            display: none;
+        }
+
+        .reveal {
+            img.animated {
+                animation-name: zoomIn;
+                animation-delay: 1s;
+            }
+
+            div.animated {
+                animation-name: fadeInRightBig;
+            }
+        }
+    }
+}
+
+#men-and-women {
+    > div > img {
+        position: absolute;
+
+        &:nth-of-type(1) {
+            top: 10px;
+            left: 60px;
+            width: 840px;
+        }
+
+        &:nth-of-type(2) {
+            bottom: 213px;
+            left: 60px;
+            width: 840px;
+        }
+    }
+
+    > div > div {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 30px 0 20px;
+        width: 100%;
+        height: 226px;
+        text-align: center;
+        font-size: 36px;
+    }
+
+    &.OPEN {
+        > div > img {
+            &:nth-of-type(2) {
+                animation-name: zoomIn;
+            }
+        }
+    }
+}
+
+#triangle {
+    .center > div {
+        display: block;
+        margin: 15px auto;
+    }
+
+    .title {
+        text-align: center;
+        color: $white;
+
+        img {
+            width: 740px;
+        }
+    }
+
+    .draggables {
+        display: inline-block;
+        position: absolute;
+        z-index: 2;
+        background-image: url('#{$frame}img-8-2.png');
+        background-size: 100% 100%;
+        padding: 10px;
+        width: 240px;
+
+        .draggable {
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: auto 100%;
+            width: auto;
+            height: 40px;
+        }
+
+        @for $i from 1 through 7 {
+            $img: $i + 2;
+
+            .draggable:nth-of-type(#{$i}) {
+                background-image: url('#{$image}img-8-#{$img}.png');
+            }
+        }
+    }
+
+    .reveal,
+    .dropzones div {
+        display: inline-block;
+        position: absolute;
+        right: 0;
+        margin-top: 20px;
+        border: 0;
+        width: 400px;
+        height: 360px;
+
+        li {
+            width: 100%;
+        }
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity .5s;
+            opacity: 0;
+            width: 100%;
+        }
+    }
+
+    .reveal {
+
+        ul {
+            margin: 0;
+        }
+
+        li.OPEN img {
+            opacity: 1;
+        }
+
+        &.COMPLETE {
+            li img.side {
+                opacity: 0;
+            }
+
+            ~ .dropzones {
+                .grey-triangle {
+                    opacity: 0;
+                }
+
+                .color-triangle {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .close-reveal {
+            display: none;
+        }
+    }
+
+    .dropzones {
+        .grey-triangle {
+            top: 0;
+            opacity: 1;
+            z-index: -1;
+        }
+    }
+}
+
+#break-triangle {
+    text-align: center;
+    color: $white;
+
+    p {
+        margin: 10px 0;
+    }
+
+    .images {
+        position: relative;
+        margin: 0 auto;
+        width: 400px;
+        height: 360px;
+    }
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: none;
+        margin: 0;
+        width: 400px;
+
+        &.side {
+            opacity: 0;
+        }
+    }
+
+    h2 {
+        margin: 0;
+    }
+
+    $items: fuel heat air;
+
+    @for $i from 1 through 3 {
+        $item: nth($items, $i);
+
+        &.#{to-upper-case($item)} .#{$item} {
+            animation-name: pulse;
+        }
+    }
+
+    &.COMPLETE {
+
+        .fuel {
+            @include explode-out($x: 0, $y: 200px, $name: 'explodeFuel');
+            animation-name: explodeFuel;
+        }
+
+        .heat {
+            @include explode-out($x: -100px, $y: -100px, $name: 'explodeHeat');
+            animation-name: explodeHeat;
+        }
+
+        .air {
+            @include explode-out($x: 100px, $y: -100px, $name: 'explodeAir');
+            animation-name: explodeAir;
+        }
+
+        .triangle,
+        .side {
+            transition: opacity .5s;
+        }
+
+        .triangle {
+            opacity: 0;
+        }
+
+        .side {
+            opacity: 1;
+        }
+    }
+}
+
+#ladder {
+
+    > div > img {
+        position: absolute;
+        top: 100px;
+        left: 190px;
+        z-index: 1;
+        height: 360px;
+    }
+
+    > div > div {
+        position: absolute;
+        top: 180px;
+        left: 180px;
+        margin: 0;
+        padding: 40px 40px 40px 240px;
+        width: 600px;
+        text-align: center;
+        font-size: 30px;
+    }
+
+    &.OPEN {
+        > div > img {
+            animation-name: zoomIn;
+            animation-delay: 1s;
+        }
+
+        > div > div {
+            animation-name: fadeInRightBig;
+        }
+    }
+}
+
+#choose {
+    img {
+        margin: 10px 130px 0;
+        width: 700px;
+    }
+
+    .group {
+        margin-top: 50px;
+        text-align: center;
+    }
+
+    .selectable {
+        margin: 0;
+        height: auto;
+        justify-content: center;
+    }
+
+    li {
+        display: inline-block;
+        margin: 25px;
+        background-image: url('#{$sprite}sprite-11-2.png');
+        background-repeat: no-repeat;
+        background-size: 1200px;
+        cursor: pointer;
+        width: 183px;
+        height: 384px;
+    }
+
+    $genders: female male;
+    $animation-names: fadeInLeftBig fadeInRightBig;
+
+    @for $i from 1 through 2 {
+        .female-male li#gender-#{nth($genders, $i)} {
+            background-position: -409px 402 - (422 * $i) + px;
+
+            &:hover {
+                background-position: -609px 402 - (422 * $i) + px;
+            }
+        }
+
+        &.OPEN.GENDER .female-male li:nth-of-type(#{$i}) {
+            animation-name: nth($animation-names, $i);
+        }
+    }
+
+    @for $i from 1 through 3 {
+        &.female .skin-color li:nth-of-type(#{$i}) {
+            background-position: #{391 - (400 * $i) + px} -20px;
+
+            &:hover {
+                background-position: #{191 - (400 * $i) + px} -20px;
+            }
+        }
+
+        &.male .skin-color li:nth-of-type(#{$i}) {
+            background-position: #{391 - (400 * $i) + px} -442px;
+
+            &:hover {
+                background-position: #{191 - (400 * $i) + px} -442px;
+            }
+        }
+
+        &.OPEN.SKIN .skin-color li:nth-of-type(#{$i}) {
+            animation-name: lightSpeedIn;
+            animation-delay: .5 * $i + s;
+        }
+    }
+
+    &.GENDER {
+        .female-male {
+            transform: translateX(0);
+        }
+
+        .skin-color {
+            transform: translateX(100%);
+        }
+    }
+
+    &.SKIN,
+    &.LEAVE {
+        .female-male {
+            transform: translateX(-100%);
+        }
+
+        .skin-color {
+            transform: translateX(0);
+        }
+    }
+}
+
+#need {
+    background-size: cover;
+
+    .frame {
+        width: 800px;
+        text-align: center;
+    }
+
+    img {
+        display: block;
+        margin: 10px auto;
+        width: 700px;
+
+        &.hidden {
+            display: none;
+        }
+    }
+
+    .draggables-left,
+    .draggables-right {
+        display: inline-flex;
+        position: relative;
+        background-image: url('#{$frame}fr-4.png');
+        background-size: 100% 100%;
+        padding: 10px;
+        width: 200px;
+        height: 360px;
+        vertical-align: middle;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: space-around;
+
+        .draggable {
+            z-index: 1;
+            margin-bottom: 10px;
+            background-image: url('#{$sprite}sprite-12-3.png');
+            background-repeat: no-repeat;
+            background-size: 500px;
+        }
+    }
+
+    $items:            pants jacket hood boots mask gloves tank walkie axe light camera punch;
+    $background-lefts: 0     1      2    3     0    1      2    3      0   1     2      3;
+    $background-tops:  0     0      0    0     1    1      1    1      2   2     2      2;
+    $widths:           65    85     58   65    70   72     104  50     70  52    80     70;
+    $heights:          90    90     80   80    90   80     44   80     80  80    80     80;
+
+    .draggables-left {
+        @for $i from 1 through 6 {
+            .draggable:nth-of-type(#{$i}) {
+                background-position: #{-4 - (122 * nth($background-lefts, $i)) + px} #{-3 - (109 * nth($background-tops, $i)) + px};
+                width: nth($widths, $i) + px;
+                height: nth($heights, $i) + px;
+            }
+        }
+    }
+
+    .draggables-right {
+        @for $i from 7 through 12 {
+            .draggable:nth-of-type(#{$i - 6}) {
+                background-position: #{-4 - (122 * nth($background-lefts, $i)) + px} #{-3 - (109 * nth($background-tops, $i)) + px};
+                width: nth($widths, $i) + px;
+                height: nth($heights, $i) + px;
+            }
+        }
+    }
+
+    .dropzones {
+        display: inline-block;
+        vertical-align: top;
+
+        > div {
+            position: relative;
+            background-image: url('#{$image}img-12-14.png');
+            background-size: 100% 100%;
+            width: 240px;
+            height: 440px;
+
+            > div {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                transition: opacity .5s;
+                opacity: 0;
+                background-repeat: no-repeat;
+                background-size: 880px;
+                width: 200px;
+                height: 400px;
+
+                &.body {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    $skin:     light medium dark;
+    $skin-pos:     0    220  440;
+
+    $items-f:   bun tank straps boots hood pants jacket gloves mask light  axe walkie punch camera;
+    $bg-lefts-f:  0  220     -3   437  656    -3    218    439  658     0  440    220   660    440;
+    $bg-tops-f: 405  405   1196   401  402   798    800    800  800  1600 1200   1589  1592   1592;
+
+    $items-m:   tank straps boots hood pants jacket gloves mask light  axe walkie punch camera;
+    $bg-lefts-m: 660    446     5  225   443    662      1  658    -3  222    440   220    660;
+    $bg-tops-m:    0    797   401  402   401    402    800  800  1196 1195   1194   798   1200;
+
+    &.female {
+
+        @for $i from 1 through 3 {
+            &.#{nth($skin, $i)} .dropzones div.body {
+                background-position: #{-1 * nth($skin-pos, $i) + px} 0;
+            }
+        }
+
+        .dropzones {
+            div > div {
+                background-image: url('#{$sprite}sprite-12-5.png');
+
+                &.bun {
+                    opacity: 1;
+                }
+            }
+
+            @for $i from 1 through 14 {
+                div.#{nth($items-f, $i)} {
+                    background-position: #{-1 * nth($bg-lefts-f, $i) + px} #{-1 * nth($bg-tops-f, $i) + px};
+                }
+
+                .dropped-#{nth($items-f, $i)} div.#{nth($items-f, $i)} {
+                    opacity: 1;
+                }
+            }
+
+            .dropped-tank div.straps {
+                opacity: 1;
+            }
+
+            .dropped-hood div.bun,
+            .dropped-mask div.bun {
+                opacity: 0;
+            }
+        }
+    }
+
+    &.male {
+
+        @for $i from 1 through 3 {
+            &.#{nth($skin, $i)} .dropzones div.body {
+                background-position: #{-1 * nth($skin-pos, $i) + px} 0;
+            }
+        }
+
+        .dropzones {
+            div > div {
+                background-image: url('#{$sprite}sprite-12-6.png');
+            }
+
+            @for $i from 1 through 13 {
+                div.#{nth($items-m, $i)} {
+                    background-position: #{-1 * nth($bg-lefts-m, $i) + px} #{-1 * nth($bg-tops-m, $i) + px};
+                }
+
+                .dropped-#{nth($items-m, $i)} div.#{nth($items-m, $i)} {
+                    opacity: 1;
+                }
+            }
+
+            .dropped-tank div.straps {
+                opacity: 1;
+            }
+        }
+    }
+
+
+    .reveal {
+        position: absolute;
+        top: 80px;
+        left: 100px;
+        background-image: url('#{$frame}fr-5.png');
+        background-size: 100% 100%;
+        width: 600px;
+        height: 320px;
+
+        &.OPEN {
+            z-index: 2;
+
+            .close-reveal {
+                opacity: 1;
+            }
+        }
+
+        > div {
+            position: static;
+        }
+
+        li {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 60px 40px;
+            width: 100%;
+            height: 100%;
+
+            &::before {
+                display: block;
+                margin: 10px auto;
+                background-image: url('#{$sprite}sprite-12-4.png');
+                background-size: 1320px;
+                height: 50px;
+                content: '';
+            }
+
+            $widths:                    300 320 400 432 340 280 302    74 300 214 420 242;
+            $background-lefts:    0     1     2     0     1     2     0     1     2     0     1     2;
+            $background-tops:     0     0     0     1     1     1     2     2     2     3     3     3;
+
+            @for $i from 1 through 12 {
+                &:nth-of-type(#{$i}):before {
+                    background-position: #{-440 * nth($background-lefts, $i) + px} #{-66 * nth($background-tops, $i) + px};
+                    width: nth($widths, $i) + px;
+                }
+            }
+        }
+
+        p {
+            position: absolute;
+            top: 185px;
+            transform: translateY(-50%);
+            width: 520px;
+        }
+
+        .close-reveal {
+            position: absolute;
+            right: 40px;
+            bottom: 40px;
+            transition: opacity .5s;
+            opacity: 0;
+        }
+    }
+}
+
+#flip {
+    h2 {
+        position: absolute;
+        top: 120px;
+        left: 0;
+        margin: 0;
+        width: 100%;
+        text-align: center;
+        color: $white;
+        font-size: 48px;
+    }
+
+    img {
+        position: absolute;
+
+        &.flip {
+            display: block;
+            top: 260px;
+            left: 350px;
+            margin: 0;
+            width: 260px;
+        }
+
+        &.fire {
+            bottom: -100px;
+            left: 0;
+            width: 100%;
+        }
+    }
+
+    div.flip-text {
+        display: block;
+        position: absolute;
+        top: 260px;
+        left: 350px;
+        // scss-lint:disable VendorPrefix PropertySortOrder
+        animation: burn 1.5s linear infinite alternate;
+        -moz-animation: none;
+        // scss-lint:enable VendorPrefix PropertySortOrder
+        margin: 0;
+        width: 260px;
+        color: transparent;
+        font-size: 145px;
+    }
+
+    &.OPEN {
+        .flip {
+            animation-name: fadeInUp;
+            animation-delay: 1s;
+        }
+    }
+}
+
+#quit {
+
+    .frame {
+        background-image: url('#{$frame}fr-6.png');
+        background-size: 100% 100%;
+        padding: 30px;
+        width: 960px;
+        text-align: center;
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+        }
+
+        h2 {
+            margin: 0;
+        }
+
+        button {
+            margin: 10px;
+        }
+    }
+}
+
