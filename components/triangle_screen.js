@@ -10,7 +10,7 @@ let onOpen = function () {
     this.incomplete();
     this.checkComplete = checkComplete;
 
-    _.each(_.get(this, 'refs.children-0.refs.children-1.refs.repeater.refs'), draggable => {
+    _.each(_.get(this, 'refs.center.refs.frame.refs.repeater.refs'), draggable => {
         draggable.setState({
             startX: 0,
             startY: 0,
