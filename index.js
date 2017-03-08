@@ -19,25 +19,25 @@ import FlipScreen from './components/flip_screen';
 
 import QuitScreen from 'shared/components/quit_screen/0.1';
 
-var Fire = (
+skoash.start(
     <skoash.Game
         config={config}
-        screens={{
-            0: iOSScreen,
-            1: TitleScreen,
-            2: InfoChemicalScreen,
-            3: InfoFuelOxygenScreen,
-            4: InfoForrestScreen,
-            5: AlarmScreen,
-            6: WhoScreen,
-            7: MenAndWomenScreen,
-            8: TriangleScreen,
-            9: BreakTriangleScreen,
-            10: LadderScreen,
-            11: ChooseScreen,
-            12: NeedScreen,
-            13: FlipScreen,
-        }}
+        screens={[
+            iOSScreen,
+            TitleScreen,
+            InfoChemicalScreen,
+            InfoFuelOxygenScreen,
+            InfoForrestScreen,
+            AlarmScreen,
+            WhoScreen,
+            MenAndWomenScreen,
+            TriangleScreen,
+            BreakTriangleScreen,
+            LadderScreen,
+            ChooseScreen,
+            NeedScreen,
+            FlipScreen,
+        ]}
         menus={{
             quit: QuitScreen,
         }}
@@ -51,6 +51,3 @@ var Fire = (
         ]}
     />
 );
-
-skoash.start(Fire);
-

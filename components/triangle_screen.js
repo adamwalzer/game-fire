@@ -1,53 +1,61 @@
 import Draggable from 'shared/components/draggable/0.4';
 import Dropzone from 'shared/components/dropzone/0.4';
 
-class TriangleScreenComponent extends skoash.Screen {
-    open() {
-        var reveal;
 
-        super.open();
+let onOpen = function () {
+    let reveal = _.get(this.refs, 'center.refs.frame.refs.reveal');
+    let checkComplete = this.checkComplete;
+    this.checkComplete = null;
+    if (reveal) reveal.incompleteRefs();
+    this.incomplete();
+    this.checkComplete = checkComplete;
 
-        this.checkComplete = null;
-        reveal = _.get(this.refs, 'children-0.refs.children-1.refs.reveal', null);
-        if (reveal) reveal.incompleteRefs();
-        this.incomplete();
-        this.checkComplete = super.checkComplete;
-    }
-}
+    _.each(_.get(this, 'refs.children-0.refs.children-1.refs.repeater.refs'), draggable => {
+        draggable.setState({
+            startX: 0,
+            startY: 0,
+            endX: 0,
+            endY: 0,
+            grabX: null,
+            grabY: null,
+            correct: false,
+        });
+    });
+};
 
+let openReveal = function (dropped) {
+    this.updateScreenData({
+        key: 'dropzone',
+        data: {
+            message: dropped.props.message
+        }
+    });
+};
+
+let revealComplete = function () {
+    this.updateScreenData({
+        key: 'reveal',
+        data: {
+            complete: true
+        }
+    });
+};
 
 export default function (props, ref, key) {
-    var openReveal = function (dropped) {
-        this.updateScreenData({
-            key: 'dropzone',
-            data: {
-                message: dropped.props.message
-            }
-        });
-    };
-
-    var revealComplete = function () {
-        this.updateScreenData({
-            key: 'reveal',
-            data: {
-                complete: true
-            }
-        });
-    };
-
     return (
-        <TriangleScreenComponent
+        <skoash.Screen
             {...props}
             ref={ref}
             key={key}
             id="triangle"
+            onOpen={onOpen}
         >
-            <skoash.Component className="center">
+            <skoash.Component ref="center" className="center">
                 <skoash.Component className="title">
                     <skoash.Image src={`${CMWN.MEDIA.IMAGE}img-8-1.png`} />
                     <h3>Choose the words and drag to form a triangle</h3>
                 </skoash.Component>
-                <skoash.Component className="frame">
+                <skoash.Component ref="frame" className="frame">
                     <skoash.MediaSequence>
                         <skoash.Audio
                             type="voiceOver"
@@ -112,6 +120,7 @@ export default function (props, ref, key) {
                     </skoash.MediaCollection>
                     <skoash.Repeater
                         className="draggables"
+                        ref="repeater"
                         amount={7}
                         item={<Draggable
                           returnOnIncorrect
@@ -196,7 +205,7 @@ export default function (props, ref, key) {
                     />
                 </skoash.Component>
             </skoash.Component>
-        </TriangleScreenComponent>
+        </skoash.Screen>
     );
 }
 
